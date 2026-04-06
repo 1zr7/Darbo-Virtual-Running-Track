@@ -101,3 +101,6 @@ InitTestScene*.unity*
 # Firebase config
 google-services.json
 GoogleService-Info.plist
+
+# Firebase native plugins (big files)
+Assets/Firebase/Plugins/
