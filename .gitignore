@@ -83,3 +83,6 @@ Assets/Firebase/Plugins/x86_64/
 google-services.json
 google-services-desktop.json
 google-services.xml
+
+Assets/StreamingAssets/google-services-desktop.json
+Assets/Plugins/Android/FirebaseApp.androidlib/res/values/google-services.xml
