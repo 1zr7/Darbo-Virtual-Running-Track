@@ -8,6 +8,7 @@ public class SimulatedDistanceService : IDistanceService
 
     public void StartTracking()
     {
+        Debug.Log("simulation started");
         isTracking = true;
     }
 

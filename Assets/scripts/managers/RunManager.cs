@@ -3,7 +3,7 @@ using UnityEngine;
 public class RunManager : MonoBehaviour
 {
     public static RunManager Instance;
-	public IntervalManager intervalManager;
+    public IntervalManager intervalManager;
     public float distance = 0f;
     public int laps = 0;
 
@@ -15,12 +15,23 @@ public class RunManager : MonoBehaviour
 
     void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         Instance = this;
+        
     }
 
     void Start()
     {
-        intervalManager = GetComponent<IntervalManager>();
+        
+        if (intervalManager == null)
+        {
+            Debug.LogError("IntervalManager NOT FOUND");
+        }
         if (useGPS)
         {
             distanceService = gameObject.AddComponent<GPSDistanceService>();

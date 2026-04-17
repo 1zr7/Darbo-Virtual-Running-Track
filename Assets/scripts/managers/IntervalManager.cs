@@ -6,7 +6,7 @@ public class IntervalManager : MonoBehaviour
     public float restTime = 30f; 
 
     private float startDistance = 0f;
-    private float restTimer = 0f;
+    public float restTimer = 0f;
 
     public bool isIntervalMode = false;
     public bool isResting = false;
