@@ -1,9 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:keep="@string/gcm_defaultSenderId,@string/google_storage_bucket,@string/project_id,@string/google_api_key,@string/google_crash_reporting_api_key,@string/google_app_id">
-  <string name="gcm_defaultSenderId" translatable="false">175174558605</string>
-  <string name="google_storage_bucket" translatable="false">darbo-app.firebasestorage.app</string>
-  <string name="project_id" translatable="false">darbo-app</string>
-  <string name="google_api_key" translatable="false">AIzaSyB1sycraDnHAiSg75LRZ9phqxBfV2ltbaM</string>
-  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyB1sycraDnHAiSg75LRZ9phqxBfV2ltbaM</string>
-  <string name="google_app_id" translatable="false">1:175174558605:android:d8d1039377d1c703de93c4</string>
-</resources>
