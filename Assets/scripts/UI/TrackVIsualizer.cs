@@ -8,7 +8,7 @@ public class TrackVisualizer : MonoBehaviour
     public float height = 10f;
     public float cornerRadius = 2f;
     public int cornerSegments = 20;
-
+    public Transform runnerDot;
     [Header("Line Renderers")]
     public LineRenderer baseLine;     
     public LineRenderer progressLine; 
@@ -23,7 +23,15 @@ public class TrackVisualizer : MonoBehaviour
 
     void Update()
     {
+        float lapProgress = 0f;
+
+        if (RunManager.Instance != null)
+        {
+            lapProgress = (RunManager.Instance.distance % 400f) / 400f;
+        }
+
         UpdateProgress();
+        UpdateRunnerDot(lapProgress);
     }
 
     void GenerateTrack()
@@ -70,6 +78,16 @@ public class TrackVisualizer : MonoBehaviour
         baseLine.useWorldSpace = true;
         baseLine.positionCount = fullPoints.Length;
         baseLine.SetPositions(fullPoints);
+    }
+    
+    void UpdateRunnerDot(float progress)
+    {
+        if (runnerDot == null || fullPoints == null) return;
+
+        int index = Mathf.FloorToInt(progress * (fullPoints.Length - 1));
+        index = Mathf.Clamp(index, 0, fullPoints.Length - 1);
+
+        runnerDot.position = fullPoints[index];
     }
 
     void UpdateProgress()

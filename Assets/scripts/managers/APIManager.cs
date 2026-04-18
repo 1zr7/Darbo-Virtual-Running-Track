@@ -15,7 +15,7 @@ public class RunData
 
 public class APIManager : MonoBehaviour
 {
-    public string baseURL = "http://localhost:3000/api/runs";
+    public string baseURL = "http://192.168.56.1:3000/api/runs";
 
     public void SaveRun()
     {
@@ -49,7 +49,7 @@ public class APIManager : MonoBehaviour
 
         if (request.result == UnityWebRequest.Result.Success)
         {
-            Debug.Log("Run saved!");
+            Debug.Log("Run saved");
         }
         else
         {

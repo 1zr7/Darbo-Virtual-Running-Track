@@ -8,6 +8,7 @@ public class authManager : MonoBehaviour
     public static authManager Instance;
 
     private FirebaseAuth auth;
+    private NavigationManager navigationManager;
 
     void Awake()
     {
@@ -45,7 +46,37 @@ public class authManager : MonoBehaviour
 
     public async Task Login(string email, string password)
     {
-        await auth.SignInWithEmailAndPasswordAsync(email, password);
-        Debug.Log("User Logged In");
+        try
+        {
+            var result = await auth.SignInWithEmailAndPasswordAsync(email, password);
+            Debug.Log("User Logged In: " + result.User.Email);
+
+            NavigationManager.Instance.GoToMainMenu();
+        }
+        catch (FirebaseException e)
+        {
+            Debug.LogError("Firebase Error: " + e.Message);
+        }
     }
+    
+    void EnsureNavigationManager()
+    {
+        if (NavigationManager.Instance == null)
+        {
+            Debug.LogWarning("NavigationManager missing, creating one");
+
+            GameObject prefab = Resources.Load<GameObject>("NavigationManager");
+
+            if (prefab != null)
+            {
+                Instantiate(prefab);
+            }
+            else
+            {
+                Debug.LogError("NavigationManager prefab not found ");
+            }
+        }
+    }
+    
+    
 }
