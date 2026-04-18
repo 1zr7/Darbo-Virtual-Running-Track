@@ -47,6 +47,7 @@ public class IntervalManager : MonoBehaviour
         restTimer = restTime;
 
         Debug.Log("Rest started");
+        FindObjectOfType<TextToSpeech>()?.Speak("Rest started");
     }
 
     void StartNextInterval()
@@ -55,5 +56,6 @@ public class IntervalManager : MonoBehaviour
         startDistance = RunManager.Instance.distance;
 
         Debug.Log("interval session started");
+        FindObjectOfType<TextToSpeech>()?.Speak("Run");
     }
 }
