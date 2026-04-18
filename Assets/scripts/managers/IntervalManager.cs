@@ -33,6 +33,13 @@ public class IntervalManager : MonoBehaviour
         else
         {
             restTimer -= Time.deltaTime;
+            restTimer = Mathf.Max(restTimer, 0f);
+
+
+            if (restTimer <= 3f && restTimer > 2.9f)
+            {
+                AudioManager.Instance?.PlayCountdown();
+            }
 
             if (restTimer <= 0)
             {
@@ -56,6 +63,8 @@ public class IntervalManager : MonoBehaviour
         startDistance = RunManager.Instance.distance;
 
         Debug.Log("interval session started");
+        
+        var tts = FindObjectOfType<TextToSpeech>();
         FindObjectOfType<TextToSpeech>()?.Speak("Run");
     }
 }

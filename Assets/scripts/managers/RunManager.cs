@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class RunManager : MonoBehaviour
 {
@@ -6,12 +7,15 @@ public class RunManager : MonoBehaviour
     public IntervalManager intervalManager;
     public float distance = 0f;
     public int laps = 0;
-
+    public float runTime = 0f;
+    
+    
     private float lapDistance = 400f;
 
     public bool useGPS = true;
 
     private IDistanceService distanceService;
+    private int lastLap = 0;
 
     void Awake()
     {
@@ -46,8 +50,21 @@ public class RunManager : MonoBehaviour
     {
         if (distanceService == null) return;
 
+        if (intervalManager != null && intervalManager.isResting)
+            return;
+
         distance = distanceService.GetDistance();
         laps = Mathf.FloorToInt(distance / lapDistance);
+
+        runTime += Time.deltaTime;
+        int currentLap = Mathf.FloorToInt(distance / lapDistance);
+        if (currentLap > lastLap)
+        {
+            OnLapCompleted(currentLap);
+            lastLap = currentLap;
+        }
+
+        laps = currentLap;
     }
 
     public void StartRun()
@@ -81,6 +98,42 @@ public class RunManager : MonoBehaviour
         else
         {
             distanceService = new SimulatedDistanceService();
+        }
+    }
+    public float GetPace()
+    {
+        if (distance <= 0) return 0;
+
+        float km = distance / 1000f;
+        return runTime / km; 
+    }
+    
+    public string GetFormattedPace()
+    {
+        float pace = GetPace();
+
+        int minutes = Mathf.FloorToInt(pace / 60f);
+        int seconds = Mathf.FloorToInt(pace % 60f);
+
+        return minutes + ":" + seconds.ToString("00");
+    }
+    
+    void OnLapCompleted(int lapNumber)
+    {
+        Debug.Log("Lap " + lapNumber + " completed");
+        IEnumerator LapFeedback(int lapNumber)
+        {
+            var tts = FindObjectOfType<TextToSpeech>();
+            
+            AudioManager.Instance?.PlayBeep();
+
+            yield return new WaitForSeconds(0.5f);
+
+            if (tts != null)
+            {
+                string pace = GetFormattedPace();
+                tts.Speak("Lap " + lapNumber + ". Pace " + pace);
+            }
         }
     }
 

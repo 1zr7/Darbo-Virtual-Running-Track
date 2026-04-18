@@ -5,7 +5,7 @@ public class RunUI : MonoBehaviour
 {
     public TextMeshProUGUI distanceText;
     public TextMeshProUGUI lapsText;
-
+    public TextMeshProUGUI paceText;
     public TextMeshProUGUI stateText;
     public TextMeshProUGUI timerText;
     
@@ -18,6 +18,7 @@ public class RunUI : MonoBehaviour
        
         distanceText.text = "Distance: " + run.distance.ToString("F1") + " m";
         lapsText.text = "Laps: " + run.laps;
+        paceText.text = "Pace: " + RunManager.Instance.GetFormattedPace() + " min/km";
 
         
         if (interval != null && interval.isIntervalMode)

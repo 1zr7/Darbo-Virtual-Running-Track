@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class TextToSpeech : MonoBehaviour
 {
@@ -17,6 +18,14 @@ public class TextToSpeech : MonoBehaviour
 
     public void Speak(string text)
     {
+        StartCoroutine(SpeakRoutine(text));
+    }
+
+    IEnumerator SpeakRoutine(string text)
+    {
+        AudioManager.Instance?.PlayBeep();
+        yield return new WaitForSeconds(0.4f);
+
         if (tts != null)
         {
             tts.Call<int>("speak", text, 0, null, null);
