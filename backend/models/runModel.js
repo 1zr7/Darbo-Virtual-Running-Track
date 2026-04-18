@@ -13,13 +13,13 @@ function saveRun(run, callback) {
 
 function getLeaderboard(callback) {
   db.all(
-    `SELECT user, MAX(distance) as bestDistance
-     FROM runs
-     GROUP BY user
-     ORDER BY bestDistance DESC
-     LIMIT 10`,
-    [],
-    callback
+  `SELECT user, MAX(laps) as bestLaps
+   FROM runs
+   GROUP BY user
+   ORDER BY bestLaps DESC
+   LIMIT 10`,
+  [],
+  callback
   );
 }
 
