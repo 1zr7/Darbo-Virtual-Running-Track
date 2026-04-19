@@ -12,11 +12,23 @@ public class AudioManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
+
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>(); 
+        }
     }
 
     public void PlayBeep()
     {
-        audioSource.PlayOneShot(beepClip);
+        if (audioSource != null && beepClip != null)
+        {
+            audioSource.PlayOneShot(beepClip);
+        }
+        else
+        {
+            Debug.LogWarning("Beep audio missing");
+        }
     }
 
     public void PlayCountdown()

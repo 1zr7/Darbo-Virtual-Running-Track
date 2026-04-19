@@ -15,7 +15,7 @@ public class RunData
 
 public class APIManager : MonoBehaviour
 {
-    public string baseURL = "http://192.168.56.1:3000/api/runs";
+    public string baseURL = "http://192.168.0.106:3000/api/runs";
 
     public void SaveRun()
     {

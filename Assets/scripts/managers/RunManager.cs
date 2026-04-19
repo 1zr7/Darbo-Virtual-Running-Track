@@ -4,12 +4,13 @@ using System.Collections;
 public class RunManager : MonoBehaviour
 {
     public static RunManager Instance;
+
     public IntervalManager intervalManager;
+
     public float distance = 0f;
     public int laps = 0;
     public float runTime = 0f;
-    
-    
+
     private float lapDistance = 400f;
 
     public bool useGPS = true;
@@ -26,16 +27,15 @@ public class RunManager : MonoBehaviour
         }
 
         Instance = this;
-        
     }
 
     void Start()
     {
-        
         if (intervalManager == null)
         {
             Debug.LogError("IntervalManager NOT FOUND");
         }
+
         if (useGPS)
         {
             distanceService = gameObject.AddComponent<GPSDistanceService>();
@@ -54,10 +54,11 @@ public class RunManager : MonoBehaviour
             return;
 
         distance = distanceService.GetDistance();
-        laps = Mathf.FloorToInt(distance / lapDistance);
 
         runTime += Time.deltaTime;
+
         int currentLap = Mathf.FloorToInt(distance / lapDistance);
+
         if (currentLap > lastLap)
         {
             OnLapCompleted(currentLap);
@@ -81,16 +82,16 @@ public class RunManager : MonoBehaviour
     {
         distanceService.StopTracking();
     }
-    
+
     public void SetMode(bool useGPSMode)
     {
         useGPS = useGPSMode;
-    
+
         if (distanceService != null)
         {
             distanceService.StopTracking();
         }
-    
+
         if (useGPS)
         {
             distanceService = gameObject.AddComponent<GPSDistanceService>();
@@ -100,14 +101,15 @@ public class RunManager : MonoBehaviour
             distanceService = new SimulatedDistanceService();
         }
     }
+
     public float GetPace()
     {
         if (distance <= 0) return 0;
 
         float km = distance / 1000f;
-        return runTime / km; 
+        return runTime / km;
     }
-    
+
     public string GetFormattedPace()
     {
         float pace = GetPace();
@@ -117,24 +119,34 @@ public class RunManager : MonoBehaviour
 
         return minutes + ":" + seconds.ToString("00");
     }
-    
+
     void OnLapCompleted(int lapNumber)
     {
         Debug.Log("Lap " + lapNumber + " completed");
-        IEnumerator LapFeedback(int lapNumber)
-        {
-            var tts = FindObjectOfType<TextToSpeech>();
-            
-            AudioManager.Instance?.PlayBeep();
 
-            yield return new WaitForSeconds(0.5f);
-
-            if (tts != null)
-            {
-                string pace = GetFormattedPace();
-                tts.Speak("Lap " + lapNumber + ". Pace " + pace);
-            }
-        }
+        StartCoroutine(LapFeedback(lapNumber)); // ✅ Correct call
     }
 
+    IEnumerator LapFeedback(int lapNumber)
+    {
+        var tts = FindFirstObjectByType<TextToSpeech>();
+
+        
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayBeep();
+        }
+
+        yield return new WaitForSeconds(0.5f);
+
+        if (tts != null)
+        {
+            string pace = GetFormattedPace();
+            tts.Speak("Lap " + lapNumber + ". Pace " + pace);
+        }
+        else
+        {
+            Debug.LogWarning("TextToSpeech not found!");
+        }
+    }
 }
